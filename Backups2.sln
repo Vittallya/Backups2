@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32929.386
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backups.Lib", "Backups.Lib\Backups.Lib.csproj", "{BED039D0-2D21-4908-B9DC-20A56A6FFD0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backups.Test", "Backups.Test\Backups.Test.csproj", "{1F15976F-EDC3-4E37-8E97-620C4EE23684}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BED039D0-2D21-4908-B9DC-20A56A6FFD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED039D0-2D21-4908-B9DC-20A56A6FFD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED039D0-2D21-4908-B9DC-20A56A6FFD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED039D0-2D21-4908-B9DC-20A56A6FFD0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F15976F-EDC3-4E37-8E97-620C4EE23684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F15976F-EDC3-4E37-8E97-620C4EE23684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F15976F-EDC3-4E37-8E97-620C4EE23684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F15976F-EDC3-4E37-8E97-620C4EE23684}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {84297FF7-2111-48D5-B1F6-02B279D67FCC}
+	EndGlobalSection
+EndGlobal
