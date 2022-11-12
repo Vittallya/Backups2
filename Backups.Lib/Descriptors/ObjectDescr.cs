@@ -14,16 +14,13 @@ namespace Backups.Lib.Descriptors
 
         public string PathGlobal { get; }
 
-        public string PathLocal { get; }
+        public string RelativePath { get; }
 
         public string Name { get; }
 
         public string PathWithoutName { get; }
 
-        public void Accept(IVisitor visitor)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void Accept(IVisitor visitor);
 
         public ObjectDescr(ICatalogDesc parent, string name):
             this(Path.Combine(parent.PathGlobal, name))
@@ -37,7 +34,7 @@ namespace Backups.Lib.Descriptors
                 mainCatalog = mainCatalog.ParentCatalog;
 
             MainCatalog = mainCatalog;
-            PathLocal = PathGlobal.Substring((mainCatalog.PathGlobal.Length + 1));
+            RelativePath = PathGlobal.Substring((mainCatalog.PathGlobal.Length + 1));
         }
 
 

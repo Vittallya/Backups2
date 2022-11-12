@@ -20,5 +20,7 @@ namespace Backups.Lib.StorageSystem
         {
             return zipStorages.SelectMany(x => x.GetObjects(objectsRepo));
         }
+
+        public int GetStoragesCount() => zipStorages.Count;
     }
 }

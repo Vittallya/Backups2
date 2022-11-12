@@ -9,7 +9,7 @@ namespace Backups.Lib.Repository
 
     //root/a/a/v/
 
-    class InMemoryRepository : IRepository
+    public class InMemoryRepository : IRepository
     {
         private readonly ICatalogDesc root;
 

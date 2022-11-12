@@ -26,7 +26,7 @@ namespace Backups.Lib.Descriptors
                 if (part.Length == 0)
                     continue;
 
-                cur = parent.SubCatalogs.Where(x => x.Name == part) as TCat;
+                cur = parent.SubCatalogs.FirstOrDefault(x => x.Name == part) as TCat;
 
                 if(cur == null)
                 {
@@ -65,7 +65,7 @@ namespace Backups.Lib.Descriptors
                 if (part.Length == 0)
                     continue;
 
-                current = parent.SubCatalogs.Where(x => x.Name == part) as TCat;
+                current = parent.SubCatalogs.FirstOrDefault(x => x.Name == part) as TCat;
 
                 if (current == null)
                     return false;
@@ -92,7 +92,7 @@ namespace Backups.Lib.Descriptors
                 throw new ArgumentException("path is null or empty");
 
             current = default;
-            string fileName = default;
+            string fileName = path;
             parentCat = parent;
 
             if (path.Contains('\\'))
@@ -128,7 +128,7 @@ namespace Backups.Lib.Descriptors
                 string fileName = path.Substring(lastIndexSlash + 1);
                 string pathToFile = path.Substring(0, lastIndexSlash);
 
-                if(cat.TryGetCatalog(path, out TCat cur))
+                if(cat.TryGetCatalog(pathToFile, out TCat cur))
                 {
                     if (cur.SubFiles.Any(x => x.Name == fileName))
                         throw new ArgumentException("file with same name is exists");
@@ -136,7 +136,7 @@ namespace Backups.Lib.Descriptors
                 }
                 else
                 {
-                    cur = cat.GetOrCreateCatalog(path, catalogFactory);
+                    cur = cat.GetOrCreateCatalog(pathToFile, catalogFactory);
                 }
                 file = fileFactory.Create(cur, fileName, func);
                 cur.AddObject(file);

@@ -3,13 +3,17 @@ using Backups.Lib.Repository;
 using Backups.Lib.StorageSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backups.Lib.BackupSystem
 {
-    class BackupTask : IBackupTask
+    public class BackupTask : IBackupTask
     {
         private readonly List<IObjectDesc> currentTrackingObjects = new List<IObjectDesc>();
+        private readonly List<RestorePoint> restorePoints = new List<RestorePoint>();
+
+        public IReadOnlyList<RestorePoint> RestorePoints => restorePoints;
 
         public BackupTask(string name, IRepository repository, IStorageAlgorithm algorithm)
         {
@@ -24,18 +28,24 @@ namespace Backups.Lib.BackupSystem
 
         public void ClearTrackingForObject(string relativePathToObj)
         {
-            throw new NotImplementedException();
+            currentTrackingObjects.Where(x => x.RelativePath == relativePathToObj).ToList()
+                .ForEach(x => ClearTrackingForObject(x));
         }
 
         public void ClearTrackingForObject(IObjectDesc obj)
         {
             //todo слежение за объектами:вложенность
-            throw new NotImplementedException();
+            currentTrackingObjects.Remove(obj);
         }
 
         public void CreateBackup()
         {
-            throw new NotImplementedException();
+            var storage = Algorithm.Create(currentTrackingObjects, Name,
+                (restorePoints.Count + 1).ToString(), Repository);
+
+            var backupObjects = currentTrackingObjects.Select(x => new BackupObject(x, Repository));
+            var rp = new RestorePoint(DateTime.Now, backupObjects, storage, restorePoints.Count + 1);
+            restorePoints.Add(rp);
         }
 
         public void StartTrackingForObject(string relativePathToObj)

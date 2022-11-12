@@ -1,19 +1,20 @@
 ﻿using Backups.Lib.StorageSystem;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Backups.Lib.BackupSystem
 {
-    class RestorePoint
+    public class RestorePoint
     {
         public RestorePoint(DateTime creationDateTime, 
-            IReadOnlyCollection<BackupObject> backupObjects, 
+            IEnumerable<BackupObject> backupObjects, 
             IStorage storage, 
             int number)
         {
             CreationDateTime = creationDateTime;
-            BackupObjects = backupObjects;
+            BackupObjects = backupObjects.ToList();
             Storage = storage;
             Number = number;
         }

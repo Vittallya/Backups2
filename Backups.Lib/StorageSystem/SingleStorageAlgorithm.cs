@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Backups.Lib.StorageSystem
 {
-    class SingleStorageAlgorithm : StorageAlgorithm
+    public class SingleStorageAlgorithm : StorageAlgorithm
     {
         public SingleStorageAlgorithm(string backupRelativePath, IRepository storageRepo, IZipArchiver archiver) 
             : base(backupRelativePath, storageRepo, archiver)

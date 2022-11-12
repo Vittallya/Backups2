@@ -9,13 +9,13 @@ namespace Backups.Lib.StorageSystem
 {
     class ZipStorage: IStorage
     {
-        private IObjectDesc x;
-
         public ZipStorage(IRepository storageRepo, string relativePathToArchive, IEnumerable<IObjectDesc> objects)
         {
             StorageRepo = storageRepo;
             RelativePathToArchive = relativePathToArchive;
             ZipObjects = GetZipStructure(objects);
+
+
         }
 
         public ZipStorage(IRepository storageRepo, string relativePathToArchive, IObjectDesc x): 
@@ -64,8 +64,12 @@ namespace Backups.Lib.StorageSystem
             throw new NotImplementedException();
         }
 
+        public int GetStoragesCount() => 1;
+
         public IRepository StorageRepo { get; }
         public string RelativePathToArchive { get; }
+
+        //todo список всех объектов в архиве
         public string[] AllFilePath { get; }
         public IEnumerable<IZipObject> ZipObjects { get; }
     }

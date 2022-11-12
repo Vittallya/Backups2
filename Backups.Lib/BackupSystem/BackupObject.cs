@@ -1,6 +1,20 @@
-﻿namespace Backups.Lib.BackupSystem
+﻿using Backups.Lib.Descriptors;
+using Backups.Lib.Repository;
+
+namespace Backups.Lib.BackupSystem
 {
-    internal class BackupObject
+    public class BackupObject
     {
+
+        public BackupObject(IObjectDesc x, IRepository repository)
+        {
+            this.Obj = x;
+            Repository = repository;
+        }
+
+        public string RelativePathToFile { get; }
+        public IRepository Repository { get; }
+        public IObjectDesc Obj { get; }
+        public IObjectDesc GetObject() => Repository.GetObject(RelativePathToFile);
     }
 }

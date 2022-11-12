@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Backups.Lib.Visitor;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -28,6 +29,11 @@ namespace Backups.Lib.Descriptors
         public string NameWithoutExt { get; }
 
         public string Ext { get; }
+
+        public override void Accept(IVisitor visitor)
+        {
+            visitor.Visit(this);
+        }
 
         public Stream GetStream()
         {

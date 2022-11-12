@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Backups.Lib.Visitor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,5 +55,12 @@ namespace Backups.Lib.Descriptors
             return list;
         }
 
+        public override void Accept(IVisitor visitor)
+        {
+            if (_childs.Any())
+                _childs.ForEach(x => x.Accept(visitor));
+            else
+                visitor.Visit(this);
+        }
     }
 }

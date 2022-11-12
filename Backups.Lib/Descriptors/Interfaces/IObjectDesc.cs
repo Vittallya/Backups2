@@ -13,7 +13,7 @@ namespace Backups.Lib.Descriptors
         string PathGlobal { get; }
 
         //Относительный путь
-        string PathLocal { get; }
+        string RelativePath { get; }
 
         string Name { get; }
 

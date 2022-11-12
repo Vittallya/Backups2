@@ -14,5 +14,6 @@ namespace Backups.Lib.StorageSystem
         /// <param name="objectsRepo">Репозиторий где хрянтся (-лись) исходные объекты</param>
         /// <returns></returns>
         IEnumerable<IObjectDesc> GetObjects(IRepository objectsRepo);
+        int GetStoragesCount();
     }
 }
