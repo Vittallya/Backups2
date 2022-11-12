@@ -28,7 +28,7 @@ namespace Backups.Lib.Repository
             root.GetOrCreateCatalog(relativePath, new CatalogDescFactory());
         }
 
-        public IObjectDesc GetDescriptor(string path)
+        public IObjectDesc GetObject(string path)
         {
             if (root.TryGetFile(path, out IFileDesc file, out _))
             {

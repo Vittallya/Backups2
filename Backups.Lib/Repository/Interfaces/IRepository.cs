@@ -15,6 +15,6 @@ namespace Backups.Lib.Repository
         Stream GetWriteStream(string path);
         Stream GetReadStream(string path);
         void CreateCatalog(string path);
-        IObjectDesc GetDescriptor(string path);
+        IObjectDesc GetObject(string path);
     }
 }

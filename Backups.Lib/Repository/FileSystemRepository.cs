@@ -13,14 +13,20 @@ namespace Backups.Lib.Repository
             Directory.CreateDirectory(path);
         }
 
-        public IObjectDesc GetDescriptor(string path)
+        public IObjectDesc GetObject(string path)
         {
             throw new NotImplementedException();
         }
 
+        public Stream GetReadStream(string path)
+        {
+            return File.OpenRead(path);
+        }
+
         public Stream GetWriteStream(string path)
         {
-            return new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+            return File.OpenWrite(path);
+            //return new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
         }
 
         public bool IsCatalogExists(string path)

@@ -151,5 +151,12 @@ namespace Backups.Lib.Descriptors
 
             return file;
         }
+
+        public static string GetNameWithoutExtension(this IObjectDesc obj)
+        {
+            if (obj is IFileDesc file)
+                return file.NameWithoutExt;
+            return obj.Name;
+        }
     }
 }
