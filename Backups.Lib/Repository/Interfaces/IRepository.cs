@@ -13,6 +13,7 @@ namespace Backups.Lib.Repository
         void WriteFile(byte[] data, string path);
         byte[] ReadFile(string path);
         Stream GetWriteStream(string path);
+        Stream GetReadStream(string path);
         void CreateCatalog(string path);
         IObjectDesc GetDescriptor(string path);
     }

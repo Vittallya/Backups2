@@ -8,7 +8,7 @@ namespace Backups.Lib.Descriptors
 {
     static class DescExtensions
     {
-        public static TCat GetOrCreateCatalog<TCat>(this TCat cat, string path, Func<TCat, string, TCat> ctor)
+        public static TCat GetOrCreateCatalog<TCat>(this TCat cat, string path, ICatalogDescFactory<TCat> descFactory)
             where TCat: class, ICatalogDesc
         {
             if (string.IsNullOrEmpty(path))
@@ -30,7 +30,7 @@ namespace Backups.Lib.Descriptors
 
                 if(cur == null)
                 {
-                    cur = ctor(parent, part);
+                    cur = descFactory.Create(parent, part);
                     parent.AddObject(cur);
                 }
                 parent = cur;
@@ -39,15 +39,24 @@ namespace Backups.Lib.Descriptors
             return cur;
         }
 
-        public static bool TryGetCatalog<TCat>(this TCat cat, string path, out TCat current)
+        /// <summary>
+        /// Поиск подкаталога внутри каталога
+        /// </summary>
+        /// <typeparam name="TCat">Тип данных каталога</typeparam>
+        /// <param name="parent">Сам родительский каталог</param>
+        /// <param name="path">Путь относительно родительского каталога</param>
+        /// <param name="current">Найденный подкаталог</param>
+        /// <returns></returns>
+        public static bool TryGetCatalog<TCat>(this TCat parent, string path, out TCat current)
             where TCat : class, ICatalogDesc
         {
+            //todo через расширения - плохой способ, либо, надо учесть, что может быть не root папка
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("path is null or empty");
 
             Queue<string> parts = new Queue<string>(path.Split('\\'));
 
-            current = cat;
+            current = parent;
 
             // abc//bcd//
 
@@ -56,7 +65,7 @@ namespace Backups.Lib.Descriptors
                 if (part.Length == 0)
                     continue;
 
-                current = cat.SubCatalogs.Where(x => x.Name == part) as TCat;
+                current = parent.SubCatalogs.Where(x => x.Name == part) as TCat;
 
                 if (current == null)
                     return false;
@@ -66,8 +75,43 @@ namespace Backups.Lib.Descriptors
 
         }
 
+        /// <summary>
+        /// Поиск файла внутри каталога
+        /// </summary>
+        /// <typeparam name="TChild">Тип данных каталога</typeparam>
+        /// <param name="parent">Сам родительский каталог</param>
+        /// <param name="path">Путь относительно родительского каталога</param>
+        /// <param name="current">Найденный файл</param>
+        /// <returns></returns>
+        public static bool TryGetFile<TCat, TFile>(this TCat parent, string path, out TFile current, out TCat parentCat)
+            where TFile : class, IFileDesc
+            where TCat : class, ICatalogDesc
+        {
+            int lastIndexSlash = path.LastIndexOf('\\');
+            if (string.IsNullOrEmpty(path) || lastIndexSlash == path.Length - 1)
+                throw new ArgumentException("path is null or empty");
+
+            current = default;
+            string fileName = default;
+            parentCat = parent;
+
+            if (path.Contains('\\'))
+            {
+                //ищем конечную папку, содержащую файл
+                fileName = path[(lastIndexSlash + 1)..];
+                string pathToFile = path[..lastIndexSlash];
+                if (!parent.TryGetCatalog(pathToFile, out parentCat))
+                    return false;
+            }
+
+            current = parentCat.SubFiles.FirstOrDefault(x => x.Name == fileName) as TFile;
+
+            return current != null;
+        }
+
+
         public static TFile CreateFile<TCat, TFile>(this TCat cat, string path, Func<Stream> func, 
-            Func<TCat, string, TCat> catalogCtor, Func<TCat, string, Func<Stream>, TFile> fileCtor )
+            ICatalogDescFactory<TCat> catalogFactory, IFileDescFactory<TCat, TFile> fileFactory )
             where TCat: class, ICatalogDesc
             where TFile : class, IFileDesc
         {
@@ -92,15 +136,15 @@ namespace Backups.Lib.Descriptors
                 }
                 else
                 {
-                    cur = cat.GetOrCreateCatalog(path, catalogCtor);
+                    cur = cat.GetOrCreateCatalog(path, catalogFactory);
                 }
-                file = fileCtor(cur, fileName, func);
+                file = fileFactory.Create(cur, fileName, func);
                 cur.AddObject(file);
             }
             else
             {
 
-                file = fileCtor(cat, path, func);
+                file = fileFactory.Create(cat, path, func);
                 cat.AddObject(file);
             }
 
